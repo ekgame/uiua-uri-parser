@@ -21,50 +21,42 @@ Parse ← (
   ◌:
 )
 
----
-Fail ← $ Validation failed for: _ 
-TestParse ← ⍤Fail⊙≍⟜Parse
-TestData ← map {"schema" "user" "domain" "port" "path" "query" "fragment"}
-
-TestData {"ftp" "username:password" "ftp.example.com" "21" "/path/to/file" "key=value&key2[]=value2" "fragment-test"}
-TestParse "ftp://username:password@ftp.example.com:21/path/to/file?key=value&key2[]=value2#fragment-test"
-
-TestData {"https" "" "www.google.com" "" "/search" "q=hello" "top"}
-TestParse "https://www.google.com/search?q=hello#top"
-
-TestData {"ftp" "username:password" "ftp.example.com" "21" "/path/to/file" "" ""}
-TestParse "ftp://username:password@ftp.example.com:21/path/to/file"
-
-TestData {"mailto" "" "" "" "user@example.com" "" ""}
-TestParse "mailto:user@example.com"
-
-TestData {"file" "" "" "" "/path/to/file.txt" "" ""}
-TestParse "file:///path/to/file.txt"
-
-TestData {"https" "user" "192.168.0.1" "" "" "" ""}
-TestParse "https://user@192.168.0.1"
-
-TestData {"https" "" "[2001:db8::1]" "" "/path" "" ""}
-TestParse "https://[2001:db8::1]/path"
-
-TestData {"data" "" "" "" "text/plain;base64,SGVsbG8sIFdvcmxkIQ%3D%3D" "" ""}
-TestParse "data:text/plain;base64,SGVsbG8sIFdvcmxkIQ%3D%3D"
----
-
-Take ↚ °□get⊙,
-IsNotEmpty ↚ λ((0|>0⧻ Take a)has a c b c)
+Take ↚ °□get
+IsEmpty ↚ (1◌◌|=0⧻°□get)has,,
+GetOrEmpty ↚ (""◌◌|°□get)has,,
+ShouldAddEmptyDomain ← /↧[⊃(⊢=@/⊂:" "GetOrEmpty "path")(IsEmpty "domain")]
 
 Build ← (
   ""
-  ⊂ $"_:" Take "schema"
+  ⊂ $"_:" Take "schema",
   ⍥(
     ⊂:"//"
-    ⍥(⊂:$"_@" Take "user") IsNotEmpty "user"
-    ⊂: Take "domain"
-    ⍥(⊂:$":_" Take "port") IsNotEmpty "port"
-  ) IsNotEmpty "domain"
-  ⍥(⊂: Take "path") IsNotEmpty "path"
-  ⍥(⊂: $"?_" Take "query") IsNotEmpty "query"
-  ⍥(⊂: $"#_" Take "fragment") IsNotEmpty "fragment"
+    ⍥(⊂:$"_@" Take "user",) ¬IsEmpty "user",
+    ⊂: Take "domain",
+    ⍥(⊂:$":_" Take "port",) ¬IsEmpty "port",
+  ) ¬IsEmpty "domain",
+  ⍥(
+    ⊂:"//"
+  ) ShouldAddEmptyDomain,
+  ⍥(⊂: Take "path",) ¬IsEmpty "path",
+  ⍥(⊂: $"?_" Take "query",) ¬IsEmpty "query",
+  ⍥(⊂: $"#_" Take "fragment",) ¬IsEmpty "fragment",
   ◌:
 )
+
+---
+Fail ← $ Validation failed for: _ 
+
+# Parse each URI and build it again from the parsed data
+# The test passes if the original URI and the built URI are equal
+TestParseAndBuild ← ⍤ Fail :≍ Build Parse ..
+
+TestParseAndBuild "ftp://username:password@ftp.example.com:21/path/to/file?key=value&key2[]=value2#fragment-test"
+TestParseAndBuild "https://www.google.com/search?q=hello#top"
+TestParseAndBuild "ftp://username:password@ftp.example.com:21/path/to/file"
+TestParseAndBuild "mailto:user@example.com"
+TestParseAndBuild "file:///path/to/file.txt"
+TestParseAndBuild "https://user@192.168.0.1"
+TestParseAndBuild "https://[2001:db8::1]/path"
+TestParseAndBuild "data:text/plain;base64,SGVsbG8sIFdvcmxkIQ%3D%3D"
+---
