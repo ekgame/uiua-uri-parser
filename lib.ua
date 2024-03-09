@@ -50,3 +50,21 @@ TestParse "https://[2001:db8::1]/path"
 TestData {"data" "" "" "" "text/plain;base64,SGVsbG8sIFdvcmxkIQ%3D%3D" "" ""}
 TestParse "data:text/plain;base64,SGVsbG8sIFdvcmxkIQ%3D%3D"
 ---
+
+Take ↚ °□get⊙,
+IsNotEmpty ↚ λ((0|>0⧻ Take a)has a c b c)
+
+Build ← (
+  ""
+  ⊂ $"_:" Take "schema"
+  ⍥(
+    ⊂:"//"
+    ⍥(⊂:$"_@" Take "user") IsNotEmpty "user"
+    ⊂: Take "domain"
+    ⍥(⊂:$":_" Take "port") IsNotEmpty "port"
+  ) IsNotEmpty "domain"
+  ⍥(⊂: Take "path") IsNotEmpty "path"
+  ⍥(⊂: $"?_" Take "query") IsNotEmpty "query"
+  ⍥(⊂: $"#_" Take "fragment") IsNotEmpty "fragment"
+  ◌:
+)
