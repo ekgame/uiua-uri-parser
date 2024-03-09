@@ -2,7 +2,7 @@
 Error ↚ 0⍤:0
 
 UriRegex ↚ $ ^(?P<schema>[\\w\\d\\.\\-]+):(?://(?:(?P<user>[\\w\\d\\.\\-\_]+(?::[\\w\\d\\.\\-\_]+)?)@)?(?:(?P<domain>(?:[\\+\\d\\w\\.\\-]+|\\[[\\w\\d:]+\\]+))(?::(?P<port>\\d+))?)?)?(?P<path>/?(?:[\\w\\d~\\-\\.\_%;,/+@\\+]+)?)?(?:\\?(?P<query>[\\w\\d~\\-\\.\_%;,/+=@\\+\\[\\]&]+))?(?:\\#(?P<fragment>[\\w\\d~\\-\\.\_%;,/+=@\\+]+))?$
-ParseFail ↚ $ Could not pase URI: _
+ParseFail ↚ $ Could not parse URI: _
 ApplyUriRegex ↚ (0|⊡0)⧻.⬚(□"") regex UriRegex
 Assign ↚ λ(insert □b ⊡ad c d)
 
