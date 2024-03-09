@@ -1,0 +1,32 @@
+When the regex for parsing URI changes, we need, it should be tested with these URIs.
+New test cases should be added to this file and the lib.ua file when applicable.
+
+Should successfully match these URIs:
+https://www.example.com/path/to/resource?query=value#fragment
+ftp://username:password@ftp.example.com:21/path/to/file?key=value&key2[]=value2#fragment-test
+ftp://user.nam122e:passw.ord123@ftp.example.com:21/path/to/file
+http://subdomain.example.co.uk/page?param=value
+mailto:user@example.com
+tel:+123456789
+file:///path/to/file.txt
+data:text/plain;base64,SGVsbG8sIFdvcmxkIQ%3D%3D
+https://[2001:db8::1]/path
+https://user@192.168.0.1
+http://user:pass@[::1]:8080/path
+http://example.com/a%20b
+https://example.com/%E2%82%AC100
+http://example.com?name=John%20Doe
+https://example.com#section-3.4
+https://example.com:8080
+https://example.com/
+https://example.com:8080/path?query=value
+schema://user:pass@server.db.schema.table:1234?option=value#rowid
+
+Should fail to match these URIs:
+invalid-url
+http://www.example.com:8080:
+ftp://user:pass@invalid host/
+https://user@192.168.0.1:invalid
+http://example.com/ path with space
+http://:8080/path
+ftp://user@:21/path
