@@ -1,9 +1,9 @@
 # Experimental!
 Error ↚ 0⍤:0
 
-UriRegex ↚ $ ^(?P<schema>[\\w\\d\\.\\-]+):(?://(?:(?P<user>[\\w\\d\\.\\-\_]+(?::[\\w\\d\\.\\-\_]+)?)@)?(?:(?P<domain>(?:[\\+\\d\\w\\.\\-]+|\\[[\\w\\d:]+\\]+))(?::(?P<port>\\d+))?)?)?(?P<path>/?(?:[\\w\\d~\\-\\.\_%;,/+@\\+]+)?)?(?:\\?(?P<query>[\\w\\d~\\-\\.\_%;,/+=@\\+\\[\\]&]+))?(?:\\#(?P<fragment>[\\w\\d~\\-\\.\_%;,/+=@\\+]+))?$
-ParseFail ↚ $ Could not parse URI: _
-ApplyUriRegex ↚ (0|⊡0)⧻.⬚(□"") regex UriRegex
+UriRegex ↚ $$ ^(?P<schema>[\w\d\.\-]+):(?://(?:(?P<user>[\w\d\.\-\_]+(?::[\w\d\.\-\_]+)?)@)?(?:(?P<domain>(?:[\+\d\w\.\-]+|\[[\w\d:]+\]+))(?::(?P<port>\d+))?)?)?(?P<path>/?(?:[\w\d~\-\.\_%;,/+@\+]+)?)?(?:\?(?P<query>[\w\d~\-\.\_%;,/+=@\+\[\]&]+))?(?:\#(?P<fragment>[\w\d~\-\.\_%;,/+=@\+]+))?$
+ParseFail ↚ $$ Could not parse URI: _
+ApplyUriRegex ↚ ⟨0|⊡0⟩⧻.⬚(□"") regex UriRegex
 Assign ↚ λ(insert □b ⊡ad c d)
 
 Parse ← (
@@ -22,9 +22,9 @@ Parse ← (
 )
 
 Take ↚ °□get
-IsEmpty ↚ (1◌◌|=0⧻°□get)has,,
-GetOrEmpty ↚ (""◌◌|°□get)has,,
-ShouldAddEmptyDomain ← /↧[⊃(⊢=@/⊂:" "GetOrEmpty "path")(IsEmpty "domain")]
+IsEmpty ↚ ⟨1◌◌|=0⧻°□get⟩has,,
+GetOrEmpty ↚ ⟨""◌◌|°□get⟩has,,
+ShouldAddEmptyDomain ↚ /↧[⊃(⊢=@/⊂:" "GetOrEmpty "path")(IsEmpty "domain")]
 
 Build ← (
   ""
@@ -45,7 +45,7 @@ Build ← (
 )
 
 ---
-Fail ← $ Validation failed for: _ 
+Fail ← $$ Validation failed for: _ 
 
 # Parse each URI and build it again from the parsed data
 # The test passes if the original URI and the built URI are equal
