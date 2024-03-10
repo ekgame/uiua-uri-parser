@@ -1,7 +1,7 @@
 # Experimental!
 Error ↚ 0⍤:0
 
-UriRegex ↚ $$ ^(?P<schema>[\w\d\.\-]+):(?://(?:(?P<user>[\w\d\.\-\_]+(?::[\w\d\.\-\_]+)?)@)?(?:(?P<domain>(?:[\+\d\w\.\-]+|\[[\w\d:]+\]+))(?::(?P<port>\d+))?)?)?(?P<path>/?(?:[\w\d~\-\.\_%;,/+@\+]+)?)?(?:\?(?P<query>[\w\d~\-\.\_%;,/+=@\+\[\]&]+))?(?:\#(?P<fragment>[\w\d~\-\.\_%;,/+=@\+]+))?$
+UriRegex ↚ $ ^(?P<schema>[\w\d\.\-]+):(?://(?:(?P<user>[\w\d\.\-_]+(?::[\w\d\.\-_]+)?)@)?(?:(?P<domain>(?:[\+\d\w\.\-]+|\[[\w\d:]+\]+))(?::(?P<port>\d+))?)?)?(?P<path>/?(?:[\w\d~\-\._%;,/+@\+]+)?)?(?:\?(?P<query>[\w\d~\-\._%;,/+=@\+\[\]&]+))?(?:\#(?P<fragment>[\w\d~\-\._%;,/+=@\+]+))?$
 ParseFail ↚ $$ Could not parse URI: _
 ApplyUriRegex ↚ ⟨0|⊡0⟩⧻.⬚(□"") regex UriRegex
 Assign ↚ λ(insert □b ⊡ad c d)
@@ -12,7 +12,7 @@ Parse ← (
   ⊙◌
   {}
   Assign 1 "schema"
-  Assign 2 "user"
+  Assign 2 "userinfo"
   Assign 3 "domain"
   Assign 4 "port"
   Assign 5 "path"
@@ -31,13 +31,11 @@ Build ← (
   ⊂ $"_:" Take "schema",
   ⍥(
     ⊂:"//"
-    ⍥(⊂:$"_@" Take "user",) ¬IsEmpty "user",
+    ⍥(⊂:$"_@" Take "userinfo",) ¬IsEmpty "userinfo",
     ⊂: Take "domain",
     ⍥(⊂:$":_" Take "port",) ¬IsEmpty "port",
   ) ¬IsEmpty "domain",
-  ⍥(
-    ⊂:"//"
-  ) ShouldAddEmptyDomain,
+  ⍥(⊂:"//") ShouldAddEmptyDomain,
   ⍥(⊂: Take "path",) ¬IsEmpty "path",
   ⍥(⊂: $"?_" Take "query",) ¬IsEmpty "query",
   ⍥(⊂: $"#_" Take "fragment",) ¬IsEmpty "fragment",
